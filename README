@@ -1,5 +1,29 @@
 # suyaa-express
 
+## 使い方
+
+1. npm と mongodb をインストール
+
+2. npm パッケージインストール
+
+```bash
+npm install
+```
+
+3. サーバーを立てる
+
+本番向け
+
+```bash
+npm run dev
+```
+
+開発向け
+
+```bash
+npm run start
+```
+
 ## 環境変数
 
 dotenvを利用
