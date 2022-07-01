@@ -7,3 +7,11 @@ npm-debug.log*
 
 # Mac OS X
 .DS_Store
+
+coverage
+coverage.json
+typechain
+
+#Hardhat files
+cache
+artifacts
