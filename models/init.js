@@ -1,8 +1,9 @@
 //mongodbに接続する
+require('dotenv').config();
 
 const mongoose = require('mongoose')
 mongoose.Promise = global.Promise
-const dbUrl = "mongodb://localhost/suyaa-express-db"
+const dbUrl = process.env.MONGODB_URL
 
 mongoose.connect(dbUrl)
   .then(() => {
