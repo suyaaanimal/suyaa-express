@@ -1,0 +1,47 @@
+# suyaa-express
+
+## 環境変数
+
+dotenvを利用
+.env.sampleをコピー
+
+```bash
+openssl rand -base64 48
+```
+
+## APIの叩き方
+
+### hello world
+
+```bash
+curl localhost:3000
+```
+
+### アカウント登録
+
+POST http://localhost:3000/auth/signup
+Content-Type: application/json
+
+{
+  "username": "nyan",
+  "password": "neko",
+}
+
+```bash
+curl -X POST -H "Content-Type: application/json" -d '{"username" : "nyan" , "password" : "neko"}' localhost:3000/auth/signup
+```
+
+### ログイン
+
+
+POST http://localhost:3000/auth/signin
+Content-Type: application/json
+
+{
+  "username": "nyan",
+  "password": "neko",
+}
+
+```bash
+curl -X POST -H "Content-Type: application/json" -d '{"username" : "nyan" , "password" : "neko"}' localhost:3000/auth/signin
+```

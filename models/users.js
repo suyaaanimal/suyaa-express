@@ -1,14 +1,13 @@
-var mongoose      = require('mongoose');
-var Schema        = mongoose.Schema;
+const mongoose = require('./init')
 var passportLocalMongoose = require('passport-local-mongoose');
 
-var User = new Schema ({
-  username  : String,
-  password  : String,
-  active    : Boolean,
-  walletAddress :String
+var userSchema = new mongoose.Schema ({
+  walletAddress : ""
 });
 
-User.plugin(passportLocalMongoose);
+userSchema.plugin(passportLocalMongoose, {
+  session: false // Disable sessions as we'll use JWTs
+})
 
-module.exports = mongoose.model('User', User);
+const User = mongoose.model('User', userSchema)
+module.exports = User
