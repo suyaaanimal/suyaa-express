@@ -37,7 +37,7 @@ router.post('/signup', function(req, res, next){
     );
 });
 
-app.post('/logout', function(req, res){
+router.post('/logout', function(req, res){
   req.logout();
   res.redirect('/');
 });
