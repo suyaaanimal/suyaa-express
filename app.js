@@ -14,10 +14,10 @@ const suyaaContract = require("./src/suyaaContract");
 
 // mint example
 app.get("/test_mint", (req, res) => {
-  //
-  console.log("test_mint");
+  /* mintしたいウォレット */
+  const account = process.env.WALLETADDRESS;
   suyaaContract
-    .mint(process.env.TEST_WALLET, 1)
+    .mint(account, 1)
     .then((e) => {
       // 成功
       console.log("成功");

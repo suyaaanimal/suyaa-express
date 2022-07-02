@@ -2,15 +2,14 @@ require("dotenv").config();
 const fs = require("fs");
 const ethers = require("ethers");
 
-// const Suyaa = JSON.parse(fs.readFileSync("asserts/ERC20Capped.json", "utf8"));
-const Suyaa = JSON.parse(
-  fs.readFileSync("artifacts/contracts/Suyaa.sol/Suyaa.json", "utf8")
-);
+// ABIデータがあるjsonファイルは、assets以下に保存してください。
+const Suyaa = JSON.parse(fs.readFileSync("assets/Suyaa.json", "utf8"));
 
 // ABI
 const SuyaaABI = Suyaa.abi;
 const PrivateKey = process.env.PRIVATE_KEY;
-const ContractAddress = process.env.CONTRACT_ADDRESS;
+/* Suyaa Contract の アドレス */
+const ContractAddress = "0x8CE939b6d0d30a4eb5fB5310Cf23ea3214419D80";
 
 const provider = new ethers.providers.InfuraProvider("maticmum");
 // const provider = ethers.getDefaultProvider("maticmum");
