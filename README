@@ -10,7 +10,16 @@
 npm install
 ```
 
-3. サーバーを立てる
+3. .env.sample をコピーし、.envを作成
+
+4. .env の JWT_SECRETを設定
+
+``` bash
+openssl rand -base64 48
+```
+で作ったコードを.env のJWT_SECRETに設定
+
+5. サーバーを立てる
 
 本番向け
 
