@@ -18,6 +18,7 @@ const limiter = RateLimit({
 app.use(limiter);
 
 app.use('/', require('./routes/auth'))
+app.use('/', require('./routes/fitbit'))
 
 app.get('/', (req, res) => {
   res.send('Hello World!')
