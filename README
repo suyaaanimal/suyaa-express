@@ -4,6 +4,14 @@
 
 1. npm と mongodb をインストール
 
+2. mongodb セットアップ
+
+```bash
+mongo
+> use suyaa-express-db
+> show dbs
+```
+
 2. npm パッケージインストール
 
 ```bash
