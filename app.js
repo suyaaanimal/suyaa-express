@@ -10,7 +10,7 @@ app.use(bodyParser.json());
 app.use(passport.initialize());
 
 // Set up rate limiter: maximum of five requests per minute
-const limiter = new RateLimit({
+const limiter = RateLimit({
   windowMs: 60000, // 1 minute
   max: 5
 });
