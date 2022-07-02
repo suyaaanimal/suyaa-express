@@ -1,18 +1,40 @@
-const express = require('express')
-const passport = require('passport');
-const bodyParser = require('body-parser');
+const express = require("express");
+const passport = require("passport");
+const bodyParser = require("body-parser");
 
-const app = express()
+const app = express();
 
 app.use(bodyParser.json());
 // app.use(bodyParser.urlencoded({ extended: true }))
 app.use(passport.initialize());
 
-app.use('/', require('./routes/auth'))
+app.use("/", require("./routes/auth"));
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
+const suyaaContract = require("./src/suyaaContract");
+
+// mint example
+app.get("/test_mint", (req, res) => {
+  //
+  console.log("test_mint");
+  suyaaContract
+    .mint(process.env.TEST_WALLET, 1)
+    .then((e) => {
+      // 成功
+      console.log("成功");
+      console.log(e);
+      res.send({
+        status: true,
+      });
+    })
+    .catch((err) => {
+      // 失敗
+      console.log("失敗");
+      console.log(err);
+      res.send({
+        status: false,
+      });
+    });
+});
 
 app.get("/testdata", (req, res) => {
   // テストデータ
@@ -50,9 +72,9 @@ app.get("/testdata", (req, res) => {
   });
 });
 
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 3000;
 app.listen(port, () => {
-  console.log(`App started at http://localhost:${port}`)
-})
+  console.log(`App started at http://localhost:${port}`);
+});
 
 module.exports = app;
