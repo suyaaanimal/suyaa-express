@@ -1,12 +1,21 @@
 const express = require('express')
 const passport = require('passport');
 const bodyParser = require('body-parser');
+const RateLimit = require('express-rate-limit');
 
 const app = express()
 
 app.use(bodyParser.json());
 // app.use(bodyParser.urlencoded({ extended: true }))
 app.use(passport.initialize());
+
+// Set up rate limiter: maximum of five requests per minute
+const limiter = new RateLimit({
+  windowMs: 60000, // 1 minute
+  max: 5
+});
+// apply rate limiter to all requests
+app.use(limiter);
 
 app.use('/', require('./routes/auth'))
 
