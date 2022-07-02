@@ -1,6 +1,18 @@
-const express = require("express");
-const app = express();
-const port = process.env.PORT || 3000;
+const express = require('express')
+const passport = require('passport');
+const bodyParser = require('body-parser');
+
+const app = express()
+
+app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({ extended: true }))
+app.use(passport.initialize());
+
+app.use('/', require('./routes/auth'))
+
+app.get('/', (req, res) => {
+  res.send('Hello World!')
+})
 
 app.get("/testdata", (req, res) => {
   // テストデータ
@@ -9,35 +21,38 @@ app.get("/testdata", (req, res) => {
     data: {
       totalScore: [
         // efficiency
-        { dateTime: "2022-6-29", score: 20 },
-        { dateTime: "2022-6-30", score: 30 },
-        { dateTime: "2022-7-1", score: 40 },
+        { dateTime: "2022-06-29", score: 20 },
+        { dateTime: "2022-06-30", score: 30 },
+        { dateTime: "2022-07-01", score: 40 },
       ],
       levels: [
-        { dateTime: "2022-6-29 23:0", level: 0 }, // level: wake
-        { dateTime: "2022-6-29 23:30", level: 1 }, //level: rem
-        { dateTime: "2022-6-30 1:0", level: 1 },
-        { dateTime: "2022-6-30 1:30", level: 1 },
-        { dateTime: "2022-6-30 2:0", level: 2 }, // level: light
-        { dateTime: "2022-6-30 2:30", level: 2 },
-        { dateTime: "2022-6-30 3:0", level: 2 },
-        { dateTime: "2022-6-30 3:30", level: 3 }, // level: deep
-        { dateTime: "2022-6-30 4:0", level: 2 },
-        { dateTime: "2022-6-30 4:30", level: 1 },
-        { dateTime: "2022-6-30 5:0", level: 2 },
-        { dateTime: "2022-6-30 5:30", level: 3 },
-        { dateTime: "2022-6-30 6:0", level: 2 },
-        { dateTime: "2022-6-30 6:30", level: 2 },
-        { dateTime: "2022-6-30 7:0", level: 1 },
-        { dateTime: "2022-6-30 7:30", level: 0 },
-        { dateTime: "2022-6-30 23:0", level: 0 }, // level: wake
-        { dateTime: "2022-6-30 23:30", level: 1 }, //level: rem
-        { dateTime: "2022-7-1 0:0", level: 1 },
+        { dateTime: "2022-06-29 23:00", level: 0 }, // level: wake
+        { dateTime: "2022-06-29 23:30", level: 1 }, //level: rem
+        { dateTime: "2022-06-30 01:00", level: 1 },
+        { dateTime: "2022-06-30 01:30", level: 1 },
+        { dateTime: "2022-06-30 02:00", level: 2 }, // level: light
+        { dateTime: "2022-06-30 02:30", level: 2 },
+        { dateTime: "2022-06-30 03:00", level: 2 },
+        { dateTime: "2022-06-30 03:30", level: 3 }, // level: deep
+        { dateTime: "2022-06-30 04:00", level: 2 },
+        { dateTime: "2022-06-30 04:30", level: 1 },
+        { dateTime: "2022-06-30 05:00", level: 2 },
+        { dateTime: "2022-06-30 05:30", level: 3 },
+        { dateTime: "2022-06-30 06:00", level: 2 },
+        { dateTime: "2022-06-30 06:30", level: 2 },
+        { dateTime: "2022-06-30 07:00", level: 1 },
+        { dateTime: "2022-06-30 07:30", level: 0 },
+        { dateTime: "2022-06-30 23:00", level: 0 }, // level: wake
+        { dateTime: "2022-06-30 23:30", level: 1 }, //level: rem
+        { dateTime: "2022-07-01 00:00", level: 1 },
       ],
     },
   });
 });
 
+const port = process.env.PORT || 3000
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
-});
+  console.log(`App started at http://localhost:${port}`)
+})
+
+module.exports = app;
