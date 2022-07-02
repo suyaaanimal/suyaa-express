@@ -2,7 +2,7 @@ const mongoose = require('./init')
 var passportLocalMongoose = require('passport-local-mongoose');
 
 var userSchema = new mongoose.Schema ({
-  walletAddress : ""
+  wallet_address : String
 });
 
 userSchema.plugin(passportLocalMongoose, {
