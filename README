@@ -18,7 +18,7 @@ mongo
 npm install
 ```
 
-3. .env.sample をコピーし、.envを作成
+3. .env.sample をコピーし、.env を作成
 
 4. .env の JWT_SECRETを設定
 
@@ -29,13 +29,13 @@ openssl rand -base64 48
 
 5. サーバーを立てる
 
-本番向け
+開発向け
 
 ```bash
 npm run dev
 ```
 
-開発向け
+本番向け
 
 ```bash
 npm run start

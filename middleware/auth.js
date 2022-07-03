@@ -7,8 +7,8 @@ require('dotenv').config();
 // These should be in .env
 // secret (generated using `openssl rand -base64 48` from console)
 const jwtSecret = process.env.JWT_SECRET
-const jwtAlgorithm = process.env.JWT_ALGORITHM
-const jwtExpiresIn = process.env.JWT_EXPIRES_IN
+const jwtAlgorithm = "HS256"
+const jwtExpiresIn = "7 days"
 
 passport.use(User.createStrategy())
 
