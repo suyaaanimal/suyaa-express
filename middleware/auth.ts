@@ -1,33 +1,33 @@
-const passport = require('passport')
-const JWT = require('jsonwebtoken')
-const PassportJwt = require('passport-jwt')
-const User = require('../models/users')
+const passport = require('passport');
+const JWT = require('jsonwebtoken');
+const PassportJwt = require('passport-jwt');
+const User = require('../models/users');
 require('dotenv').config();
 
 // These should be in .env
 // secret (generated using `openssl rand -base64 48` from console)
-const jwtSecret = process.env.JWT_SECRET
-const jwtAlgorithm = "HS256"
-const jwtExpiresIn = "7 days"
+const jwtSecret = process.env.JWT_SECRET;
+const jwtAlgorithm = 'HS256';
+const jwtExpiresIn = '7 days';
 
-passport.use(User.createStrategy())
+passport.use(User.createStrategy());
 
 function signUp(req, res, next) {
   const user = new User({
     username: req.body.username,
-  })
+  });
   // Create the user with the specified password
   User.register(user, req.body.password, (error, user) => {
     if (error) {
       // Our signup middleware failed
-      next(error)
-      return
+      next(error);
+      return;
     }
     // Store user so we can access it in our handler
-    req.user = user
+    req.user = user;
     // Success!
-    next()
-  })
+    next();
+  });
 }
 
 passport.use(
@@ -40,48 +40,48 @@ passport.use(
       // What is the secret
       secretOrKey: jwtSecret,
       // What algorithm(s) were used to sign it?
-      algorithms: [jwtAlgorithm]
+      algorithms: [jwtAlgorithm],
     },
     // When we have a verified token
     (payload, done) => {
       // Find the real user from our database using the `id` in the JWT
       User.findById(payload.sub)
-        .then(user => {
+        .then((user) => {
           // If user was found with this id
           if (user) {
-            done(null, user)
+            done(null, user);
           } else {
             // If not user was found
-            done(null, false)
+            done(null, false);
           }
         })
-        .catch(error => {
+        .catch((error) => {
           // If there was failure
-          done(error, false)
-        })
-    }
-  )
-)
+          done(error, false);
+        });
+    },
+  ),
+);
 
 function signJWTForUser(req, res) {
   // Get the user (either just signed in or signed up)
-  const user = req.user
+  const { user } = req;
   // Create a signed token
   const token = JWT.sign(
     // payload
     {
-      username: user.username
+      username: user.username,
     },
     // secret
     jwtSecret,
     {
       algorithm: jwtAlgorithm,
       expiresIn: jwtExpiresIn,
-      subject: user._id.toString()
-    }
-  )
+      subject: user.id.toString(),
+    },
+  );
   // Send the token
-  res.json({ token })
+  res.json({ token });
 }
 
 module.exports = {
@@ -89,5 +89,5 @@ module.exports = {
   signUp,
   signIn: passport.authenticate('local', { session: false }),
   requireJWT: passport.authenticate('jwt', { session: false }),
-  signJWTForUser
-}
+  signJWTForUser,
+};

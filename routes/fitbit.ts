@@ -1,18 +1,17 @@
-const express = require("express");
 const router = express.Router();
-const appConfig = require("../config/fitbitConfig.json.js");
-const { Fitbit, FileTokenManager } = require("fitbit-oauth2-client");
+const { Fitbit, FileTokenManager } = require('fitbit-oauth2-client');
+const appConfig = require('../config/fitbitConfig');
 
 // Instanciate a fitbit client.  See example config below.
 //
-var fitbit = new Fitbit(
+const fitbit = new Fitbit(
   appConfig.fitbit,
-  new FileTokenManager(appConfig.fitbit.tokenFilePath)
+  new FileTokenManager(appConfig.fitbit.tokenFilePath),
 );
 
 // In a browser, http://localhost:4000/fitbit to authorize a user for the first time.
 //
-router.get("/fitbit", function (req, res) {
+router.get('/fitbit', (req, res) => {
   res.redirect(fitbit.authorizeURL());
 });
 
@@ -20,13 +19,13 @@ router.get("/fitbit", function (req, res) {
 // endpoint is refered to in config.fitbit.authorization_uri.redirect_uri.  See example
 // config below.
 //
-router.get("/fitbit_auth_callback", function (req, res, next) {
-  var code = req.query.code;
+router.get('/fitbit_auth_callback', (req, res, next) => {
+  const { code } = req.query;
   fitbit
     .fetchToken(code)
     .then((token) => {
-      LOGGER.debug("Token fetched and persisted: ", token);
-      res.redirect("/fb-profile");
+      console.log('Token fetched and persisted: ', token);
+      res.redirect('/fb-profile');
     })
     .catch((err) => {
       next(err);
@@ -38,15 +37,15 @@ router.get("/fitbit_auth_callback", function (req, res, next) {
 // with ( err, body, token ).  If token is non-null, this means a refresh has happened
 // and you should persist the new token.
 //
-router.get("/fb-profile", function (req, res, next) {
+router.get('/fb-profile', (req, res, next) => {
   fitbit
     .request({
-      uri: "https://api.fitbit.com/1/user/-/profile.json",
-      method: "GET",
+      uri: 'https://api.fitbit.com/1/user/-/profile.json',
+      method: 'GET',
     })
     .then((response) => {
       res.send(
-        "<pre>" + JSON.stringify(response.data, null, JSON_INDENT) + "</pre>"
+        `<pre>${JSON.stringify(response.data, null, JSON_INDENT)}</pre>`,
       );
     })
     .catch((err) => {
