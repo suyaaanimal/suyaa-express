@@ -1,3 +1,5 @@
+import express from 'express';
+
 const router = express.Router();
 const { Fitbit, FileTokenManager } = require('fitbit-oauth2-client');
 const appConfig = require('../config/fitbitConfig');
@@ -23,11 +25,11 @@ router.get('/fitbit_auth_callback', (req, res, next) => {
   const { code } = req.query;
   fitbit
     .fetchToken(code)
-    .then((token) => {
+    .then((token: any) => {
       console.log('Token fetched and persisted: ', token);
       res.redirect('/fb-profile');
     })
-    .catch((err) => {
+    .catch((err: any) => {
       next(err);
     });
 });
@@ -43,14 +45,14 @@ router.get('/fb-profile', (req, res, next) => {
       uri: 'https://api.fitbit.com/1/user/-/profile.json',
       method: 'GET',
     })
-    .then((response) => {
+    .then(() => {
       res.send(
-        `<pre>${JSON.stringify(response.data, null, JSON_INDENT)}</pre>`,
+        `<pre>${JSON.stringify(res, null)}</pre>`,
       );
     })
-    .catch((err) => {
+    .catch((err: any) => {
       next(err);
     });
 });
 
-module.exports = router;
+export default router;

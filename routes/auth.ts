@@ -1,4 +1,8 @@
+import express from 'express';
+
 const authMiddleware = require('../middleware/auth');
+
+const router = express.Router();
 
 // Sign up
 router.post(
@@ -18,4 +22,4 @@ router.post(
   authMiddleware.signJWTForUser,
 );
 
-exports.default = router;
+export default router;
