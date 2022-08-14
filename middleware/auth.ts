@@ -8,7 +8,7 @@ require('dotenv').config();
 
 // These should be in .env
 // secret (generated using `openssl rand -base64 48` from console)
-const { JWT_SECRET, JWT_EXPIRES_IN } = process.env;
+const { JWT_SECRET } = process.env;
 const opts: PassportJwt.StrategyOptions = {
   // Where will the JWT be passed in the HTTP request?
   // e.g. Authorization: Bearer xxxxxxxxxx
@@ -21,21 +21,21 @@ const opts: PassportJwt.StrategyOptions = {
 
 passport.use(UserModel.createStrategy());
 
-export function signUp(req:Request, res:any, next:any) {
+export function signUp(req: Request, res: any, next: Function) {
   const user = new UserModel({
     username: req.body.username,
     password: req.body.password,
     walletAddress: req.body.wallet_address,
   });
   // Create the user with the specified password
-  UserModel.register(user, req.body.password, (error) => {
-    if (error) {
+  UserModel.register(user, req.body.password, (err) => {
+    if (err) {
       // Our signup middleware failed
-      next(error);
+      next(err);
       return;
     }
     // Store user so we can access it in our handler
-    req.user = user;
+    req.user = user; // これ要らないかも
     // Success!
     next();
   });
@@ -66,14 +66,15 @@ passport.use(
 
 export function signJWTForUser(req: Request, res:any) {
   // Create a signed token
+  const { user } = req;
   const token = JWT.sign(
     {
-      user: req.user,
+      user,
     },
     JWT_SECRET!,
     {
       algorithm: 'HS256',
-      expiresIn: JWT_EXPIRES_IN!,
+      expiresIn: '7 days',
     },
   );
   // Send the token
