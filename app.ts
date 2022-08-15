@@ -5,6 +5,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import rateLimit from 'express-rate-limit';
 
+import errorhandler from 'errorhandler';
 import fitbitRoute from './routes/fitbit';
 import authRoute from './routes/auth';
 
@@ -16,6 +17,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(passport.initialize());
 
+if (process.env.NODE_ENV === 'development') {
+  app.use(errorhandler());
+}
 // Set up rate limiter: maximum of five requests per minute
 const limiter = rateLimit({
   windowMs: 60000, // 1 minute
