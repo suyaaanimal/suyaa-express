@@ -22,6 +22,10 @@ const opts: PassportJwt.StrategyOptions = {
 passport.use(UserModel.createStrategy());
 
 export function signUp(req: Request, res: any, next: Function) {
+export interface CustomRequest extends Request {
+  user?: IUser;
+}
+
   const user = new UserModel({
     username: req.body.username,
     password: req.body.password,
@@ -35,7 +39,7 @@ export function signUp(req: Request, res: any, next: Function) {
       return;
     }
     // Store user so we can access it in our handler
-    req.user = user; // これ要らないかも
+    req.user = user;
     // Success!
     next();
   });
@@ -64,17 +68,19 @@ passport.use(
   ),
 );
 
-export function signJWTForUser(req: Request, res:any) {
+export function signJwtForUser(req: any, res: any) {
   // Create a signed token
+  console.log('⚡️START signJwt');
   const { user } = req;
   const token = JWT.sign(
     {
-      user,
+      username: user.username,
     },
     JWT_SECRET!,
     {
       algorithm: 'HS256',
       expiresIn: '7 days',
+      subject: user._id.toString(),
     },
   );
   // Send the token
@@ -86,6 +92,7 @@ export function initialize() {
 }
 
 export function signIn() {
+  console.log('⚡️START signIn');
   passport.authenticate('local', { session: false });
 }
 

@@ -10,7 +10,7 @@ router.post(
   // middleware that handles the registration process
   authMiddleware.signUp,
   // json handler
-  authMiddleware.signJWTForUser,
+  authMiddleware.signJwtForUser,
 );
 
 // Sign in
@@ -19,7 +19,7 @@ router.post(
   // middleware that handles the sign in process
   authMiddleware.signIn,
   // json handler
-  authMiddleware.signJWTForUser,
+  authMiddleware.signJwtForUser,
 );
 
 export default router;
