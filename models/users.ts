@@ -5,12 +5,14 @@ export interface IUser extends mongoose.PassportLocalDocument {
   username: string,
   password: string,
   walletAddress: string,
+  id: string
 }
 
 const userSchema = new mongoose.Schema({
   username: { type: String, required: true },
   password: { type: String, required: true },
   walletAddress: String,
+  id: String,
 });
 
 userSchema.plugin(passportLocalMongoose, {

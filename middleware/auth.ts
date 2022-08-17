@@ -1,8 +1,8 @@
 import passport from 'passport';
 import PassportJwt from 'passport-jwt';
-import { Request } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import JWT from 'jsonwebtoken';
-import { UserModel } from '../models/users';
+import { IUser, UserModel } from '../models/users';
 
 require('dotenv').config();
 
@@ -21,11 +21,11 @@ const opts: PassportJwt.StrategyOptions = {
 
 passport.use(UserModel.createStrategy());
 
-export function signUp(req: Request, res: any, next: Function) {
 export interface CustomRequest extends Request {
   user?: IUser;
 }
 
+export function signUp(req: Request, res: Response, next: NextFunction) {
   const user = new UserModel({
     username: req.body.username,
     password: req.body.password,
@@ -68,19 +68,19 @@ passport.use(
   ),
 );
 
-export function signJwtForUser(req: any, res: any) {
+export function signJwtForUser(req: CustomRequest, res: Response) {
   // Create a signed token
   console.log('⚡️START signJwt');
   const { user } = req;
   const token = JWT.sign(
     {
-      username: user.username,
+      username: user!.username,
     },
     JWT_SECRET!,
     {
       algorithm: 'HS256',
       expiresIn: '7 days',
-      subject: user._id.toString(),
+      subject: user!.id.toString(),
     },
   );
   // Send the token
